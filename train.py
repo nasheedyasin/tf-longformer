@@ -29,6 +29,7 @@ SAVE_PATH = r"D:\Fine-tuned Models\NLP\longformer\tf-longformer-base-4096"
 
 def prep_data(fpath: str,
               tpath: str,
+              text_col: str = 'text',
               label_col: str = 'label',
               *args, **kwargs) -> Tuple[tf.data.Dataset, int]:
     dataset = load_dataset('csv', data_files=fpath, split='train',
@@ -53,7 +54,7 @@ def prep_data(fpath: str,
     tokenizer = AutoTokenizer.from_pretrained(tpath)
 
     # Getting the tokenized text
-    dataset = dataset.map(lambda e: tokenizer(e['review'], truncation=True,
+    dataset = dataset.map(lambda e: tokenizer(e[text_col], truncation=True,
                                               padding=True, max_length=500),
                           batched=True)
 
@@ -129,6 +130,7 @@ if __name__ == "__main__":
     # Get Data
     trdataset, tsdataset, num_classes, id2label = prep_data(fpath=r"D:\Datasets\NLP\IMDB Dataset.csv",
                                                             tpath=MODEL_PATH,
+                                                            text_col='review',
                                                             label_col='sentiment',
                                                             batch_size=4,
                                                             val_batch_size=2)
