@@ -31,6 +31,7 @@ def prep_data(fpath: str,
               tpath: str,
               text_col: str = 'text',
               label_col: str = 'label',
+              seq_len: int = 500,
               *args, **kwargs) -> Tuple[tf.data.Dataset, int]:
     dataset = load_dataset('csv', data_files=fpath, split='train',
                            cache_dir=kwargs.get('cache_dir', r"D:\hf_cache"))
@@ -55,7 +56,7 @@ def prep_data(fpath: str,
 
     # Getting the tokenized text
     dataset = dataset.map(lambda e: tokenizer(e[text_col], truncation=True,
-                                              padding=True, max_length=500),
+                                              padding=True, max_length=seq_len),
                           batched=True)
 
     if num_classes >= 2:
