@@ -147,5 +147,5 @@ if __name__ == "__main__":
     history = model.fit(trdataset,
                         validation_data=tsdataset,
                         epochs=5,
-                        callbacks=[checkpoint],
+                        callbacks=[checkpoint, early_stopping],
                         verbose=True)
